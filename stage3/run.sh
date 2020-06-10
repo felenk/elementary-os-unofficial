@@ -20,7 +20,7 @@ sed -i 's/hera/bionic/g' /mnt/etc/apt/sources.list
 sed -i 's/ubuntu/elementary/g' /mnt/etc/hostname
 sed -i 's/ubuntu/elementary/g' /mnt/etc/hosts
 
-sed -i 's/$/ logo.nologo loglevel=0 quiet splash vt.global_cursor_default=0 plymouth.ignore-serial-consoles/g' /mnt/boot/firmware/cmdline.txt
+echo "logo.nologo loglevel=0 quiet splash vt.global_cursor_default=0 plymouth.ignore-serial-consoles" > /mnt/boot/firmware/cmdline.txt
 
 echo "" >> /mnt/boot/firmware/config.txt
 echo "boot_delay=1" >> /mnt/boot/firmware/config.txt

@@ -10,12 +10,12 @@ echo -e "
 "
 
 # Configuration for elementary OS
-wget {$NET_PLAN_URL} \
+wget $NET_PLAN_URL \
   -O /mnt/etc/netplan/01-network-manager-all.yml
 
 mkdir -p /mnt/etc/NetworkManager/conf.d
 
-wget {$NETWORK_MANAGER_URL} \
+wget $NETWORK_MANAGER_URL \
   -O /mnt/etc/NetworkManager/conf.d/10-globally-managed-devices.conf
 
 echo -e "
@@ -24,7 +24,8 @@ echo -e "
 #--------------------------#
 "
 
-wget {$LOGO_URL} \
+mkdir -p /mnt/etc/oem
+wget $LOGO_URL \
   -O /mnt/etc/oem/logo.png
 
 mkdir -p /mnt/etc/oem
