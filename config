@@ -10,7 +10,7 @@ OUTPUT_SUFFIX=".img"
 
 TARGET_IMG="elementaryos-${VERSION}-${TARGET}.${YYYYMMDD}${OUTPUT_SUFFIX}"
 
-BASE_IMG_URL="http://cdimage.ubuntu.com/releases/18.04.4/release/ubuntu-18.04.4-preinstalled-server-armhf+raspi3.img.xz"
+BASE_IMG_URL="http://cdimage.ubuntu.com/releases/18.04.4/release/ubuntu-18.04.4-preinstalled-server-armhf+raspi4.img.xz"
 
 BASE_IMG="ubuntu-18.04.4-preinstalled-server-armhf+raspi3.img"
 
