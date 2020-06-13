@@ -1,31 +1,16 @@
 IMG_NAME="Eeve"
-
 VERSION="hera"
-
 TARGET="arm64+raspi4"
-
 YYYYMMDD="$(date +%Y%m%d)"
-
 OUTPUT_SUFFIX=".img"
-
 TARGET_IMG="elementaryos-${VERSION}-${TARGET}.${YYYYMMDD}${OUTPUT_SUFFIX}"
-
 BASE_IMG_URL="http://cdimage.ubuntu.com/releases/18.04.4/release/ubuntu-18.04.4-preinstalled-server-armhf+raspi4.img.xz"
-
 BASE_IMG="ubuntu-18.04.4-preinstalled-server-armhf+raspi4.img"
-
 NET_PLAN_URL="https://raw.githubusercontent.com/elementary/os/master/etc/config/includes.chroot/etc/netplan/01-network-manager-all.yml"
-
 NETWORK_MANAGER_URL="https://raw.githubusercontent.com/elementary/os/master/etc/config/includes.chroot/usr/lib/NetworkManager/conf.d/10-globally-managed-devices.conf"
-
 MountXZ=""
-
 OEM_MANUFACTURER="Raspberry Pi Foundation"
-
 OEM_PRODUCT="Raspberry Pi"
-
 OEM_LOGO="/etc/oem/logo.png"
-
 OEM_URL="https://www.raspberrypi.org/"
-
 LOGO_URL="https://www.raspberrypi.org/app/uploads/2018/03/RPi-Logo-Reg-SCREEN.png"

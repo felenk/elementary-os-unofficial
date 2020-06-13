@@ -26,7 +26,11 @@ if [ ! -f ${BASE_IMG} ]; then
     unxz ${BASE_IMG}.xz
 fi
 
+echo -e "--> Copying image..."
+
 cp -vf ${BASE_IMG} ${TARGET_IMG}
 
 sync
 sleep 5
+
+echo -e "--> Image copied."

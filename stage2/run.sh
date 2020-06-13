@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# Map the partitions of the IMG file so we can access the filesystem
-MountIMGPartitions
+set -e
 
 echo -e "
 #------------------------------------#
@@ -9,7 +8,18 @@ echo -e "
 #------------------------------------#
 "
 
+echo -e "--> Remounting..."
+UnmountIMG
+MountIMG
+echo -e "--> Done."
+
+# Map the partitions of the IMG file so we can access the filesystem
+echo -e "--> Mounting partitions..."
+MountIMGPartitions
+echo -e "--> Done."
+
 # Configuration for elementary OS
+echo -e "--> Fetching NetworkManager configuration..."
 wget $NET_PLAN_URL \
   -O /mnt/etc/netplan/01-network-manager-all.yml
 
@@ -18,12 +28,15 @@ mkdir -p /mnt/etc/NetworkManager/conf.d
 wget $NETWORK_MANAGER_URL \
   -O /mnt/etc/NetworkManager/conf.d/10-globally-managed-devices.conf
 
+echo -e "--> Done."
+
 echo -e "
 #--------------------------#
 # STAGE 2 - FETCH OEM LOGO #
 #--------------------------#
 "
 
+echo -e "--> Setting OEM information..."
 mkdir -p /mnt/etc/oem
 wget $LOGO_URL \
   -O /mnt/etc/oem/logo.png
@@ -38,13 +51,28 @@ Logo=$OEM_LOGO
 URL=$OEM_URL
 EOF
 
-# setup chroot
-cp -f /usr/bin/qemu-aarch64-static /mnt/usr/bin
+echo -e "--> Done."
 
-mount --bind /etc/resolv.conf /mnt/etc/resolv.conf
+# setup chroot
+echo -e "--> Injecting QEMU..."
+cp -f /usr/bin/qemu-aarch64-static /mnt/usr/bin
+echo -e "--> Done."
+
+
+
+echo -e "--> Injecting DNS config..."
+ls -al /mnt/etc/resolv.conf
+RESOLV_CONF=`readlink /mnt/etc/resolv.conf`
+rm -f /mnt/etc/resolv.conf
+cat > /mnt/etc/resolv.conf << EOF
+nameserver 1.1.1.1
+nameserver 1.0.0.1
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+EOF
+echo -e "--> Done."
 
 # chroot
-set +e
 
 echo -e "
 #---------------------------------#
@@ -52,7 +80,12 @@ echo -e "
 #---------------------------------#
 "
 
+echo -e "--> Package setup (this will take a long while)...."
+set +e
 chroot /mnt /bin/bash << EOF
+# Add Universe repository (for some extras like Fira Code)
+add-apt-repository universe -ny
+
 # Add elementary OS stable repository
 add-apt-repository ppa:elementary-os/stable -ny
 
@@ -65,17 +98,17 @@ apt-get upgrade -y
 
 # Install elementary OS packages
 apt-get install -y \
+  ttf-mscorefonts-installer \
+  fonts-firacode \
+  vim \
+  tmux \
+  htop \
+  raspi-config \
   elementary-desktop \
   elementary-minimal \
-  elementary-standard
-
-# Install elementary OS initial setup
-apt-get install -y \
-  io.elementary.initial-setup
-
-# Install elementary OS onboarding
-apt-get install -y \
-  io.elementary.onboarding
+  elementary-standard \
+  io.elementary.initial-setup \
+  io.elementary.onboarding \
 
 # Remove unnecessary packages
 apt-get purge -y \
@@ -87,14 +120,19 @@ apt-get purge -y \
   lxd \
   lxd-client \
   acpid \
-  gnome-software \
-  vim*
+  gnome-software
 
 # Clean up after ourselves and clean out package cache to keep the image small
 apt-get autoremove -y
+apt-purge
 apt-get clean
 apt-get autoclean
 EOF
 set -e
+echo -e "--> Package setup done."
 
-umount /mnt/etc/resolv.conf
+echo -e "--> Restoring resolv.conf..."
+rm -f /mnt/etc/resolv.conf
+ln -s ${RESOLV_CONF} /mnt/etc/resolv.conf
+ls -al /mnt/etc/resolv.conf
+echo -e "--> Done."
