@@ -124,7 +124,6 @@ apt-get purge -y \
 
 # Clean up after ourselves and clean out package cache to keep the image small
 apt-get autoremove -y
-apt-purge
 apt-get clean
 apt-get autoclean
 EOF
