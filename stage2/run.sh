@@ -30,13 +30,13 @@ wget $LOGO_URL \
 
 mkdir -p /mnt/etc/oem
 
-cat > /mnt/etc/oem.conf << "
+cat > /mnt/etc/oem.conf << EOF
 [OEM]
 Manufacturer=$OEM_MANUFACTURER
 Product=$OEM_PRODUCT
 Logo=$OEM_LOGO
 URL=$OEM_URL
-"
+EOF
 
 # setup chroot
 cp -f /usr/bin/qemu-aarch64-static /mnt/usr/bin
