@@ -82,9 +82,8 @@ echo -e "
 
 echo -e "--> Package setup (this will take a long while)...."
 set +e
-chroot /mnt /bin/bash << EOF
-# Add Universe repository (for some extras like Fira Code)
-add-apt-repository universe -ny
+chroot /mnt /bin/bash -x << EOF
+export DEBIAN_FRONTEND=noninteractive
 
 # Add elementary OS stable repository
 add-apt-repository ppa:elementary-os/stable -ny
@@ -96,21 +95,29 @@ add-apt-repository ppa:elementary-os/os-patches -ny
 apt-get update
 apt-get upgrade -y
 
-# Install elementary OS packages
+echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
+
+echo -e "--> Base Packages"
 apt-get install -y \
   ttf-mscorefonts-installer \
   fonts-firacode \
   vim \
   tmux \
-  htop \
-  raspi-config \
+  htop
+
+echo -e "--> Elementary"
+apt-get install -y \
   elementary-desktop \
   elementary-minimal \
-  elementary-standard \
-  io.elementary.initial-setup \
-  io.elementary.onboarding \
+  elementary-standard 
 
-# Remove unnecessary packages
+
+echo -e "--> Elementary Setup"
+apt-get install -y 
+  io.elementary.initial-setup \
+  io.elementary.onboarding 
+
+echo -e "--> Remove unnecessary packages"
 apt-get purge -y \
   unity-greeter \
   ubuntu-server \
@@ -122,10 +129,15 @@ apt-get purge -y \
   acpid \
   gnome-software
 
+echo -e "--> Cleanup packages"
 # Clean up after ourselves and clean out package cache to keep the image small
 apt-get autoremove -y
 apt-get clean
 apt-get autoclean
+
+echo -e "--> Reset password"
+useradd ubuntu
+echo "ubuntu:ubuntu" | chpasswd
 EOF
 set -e
 echo -e "--> Package setup done."
