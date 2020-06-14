@@ -134,10 +134,6 @@ echo -e "--> Cleanup packages"
 apt-get autoremove -y
 apt-get clean
 apt-get autoclean
-
-echo -e "--> Reset password"
-useradd ubuntu
-echo "ubuntu:ubuntu" | chpasswd
 EOF
 set -e
 echo -e "--> Package setup done."
