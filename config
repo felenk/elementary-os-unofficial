@@ -8,6 +8,7 @@ BASE_IMG_URL="http://cdimage.ubuntu.com/releases/18.04.4/release/ubuntu-18.04.4-
 BASE_IMG="ubuntu-18.04.4-preinstalled-server-armhf+raspi4.img"
 NET_PLAN_URL="https://raw.githubusercontent.com/elementary/os/master/etc/config/includes.chroot/etc/netplan/01-network-manager-all.yml"
 NETWORK_MANAGER_URL="https://raw.githubusercontent.com/elementary/os/master/etc/config/includes.chroot/usr/lib/NetworkManager/conf.d/10-globally-managed-devices.conf"
+RASPI_CONFIG_URL="https://raw.githubusercontent.com/RPi-Distro/raspi-config/master/raspi-config"
 MountXZ=""
 OEM_MANUFACTURER="Raspberry Pi Foundation"
 OEM_PRODUCT="Raspberry Pi"

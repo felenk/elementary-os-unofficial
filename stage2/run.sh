@@ -28,6 +28,10 @@ mkdir -p /mnt/etc/NetworkManager/conf.d
 wget $NETWORK_MANAGER_URL \
   -O /mnt/etc/NetworkManager/conf.d/10-globally-managed-devices.conf
 
+#echo -e "--> Fetching raspi-config..."
+#wget $RASPI_CONFIG_URL \
+#  -O /mnt/usr/bin/raspi-config
+#chmod +x /mnt/usr/bin/raspi-config
 echo -e "--> Done."
 
 echo -e "
@@ -113,7 +117,7 @@ apt-get install -y \
 
 
 echo -e "--> Elementary Setup"
-apt-get install -y 
+apt-get install -y \
   io.elementary.initial-setup \
   io.elementary.onboarding 
 
